@@ -27,7 +27,7 @@
                 android:layout_centerVertical="true"
                 android:background="@drawable/footstep2"
                 android:gravity="center"
-                android:text="895445\nSteps"
+                android:text="3 2 1\nSteps"
                 android:textColor="#400"
                 android:textSize="42sp" />
 
