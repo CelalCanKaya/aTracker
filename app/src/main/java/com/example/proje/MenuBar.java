@@ -48,6 +48,14 @@ public abstract class MenuBar extends AppCompatActivity {
                         } else
                             mdrawerLayout.closeDrawers();
                         break;
+                    case R.id.bluetooth:
+                        if (!stackTraceElements[3].getClassName().equals(bluetooth.class.getName())) {
+                            Intent menu = new Intent(getApplicationContext(), bluetooth.class);
+                            startActivity(menu);
+                            finish();
+                        } else
+                            mdrawerLayout.closeDrawers();
+                        break;
                 }
                 return true;
             }

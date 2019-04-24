@@ -8,4 +8,8 @@
         android:id="@+id/log"
         android:title="Check Logs"
         ></item>
+    <item
+        android:id="@+id/bluetooth"
+        android:title="bluetooth"
+        ></item>
 </menu>
