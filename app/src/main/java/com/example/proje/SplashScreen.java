@@ -18,7 +18,7 @@ public class SplashScreen extends AppCompatActivity {
         logo = (ImageView) findViewById(R.id.logo);
         Animation myanim = AnimationUtils.loadAnimation(this, R.anim.transition);
         logo.startAnimation(myanim);
-        final Intent i = new Intent(this, ChartScreen.class);
+        final Intent i = new Intent(this, MainScreen.class);
         Thread timer = new Thread(){
             public void run(){
                 try{

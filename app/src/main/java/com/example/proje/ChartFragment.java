@@ -55,7 +55,7 @@ public class ChartFragment extends Fragment {
         BarData barData = new BarData(barDataSet);
         barData.setBarWidth(0.9f);
         bar.setVisibility(View.VISIBLE);
-        bar.animateY(2500);
+        bar.animateY(2000);
         bar.setData(barData);
         bar.setFitBars(true);
         bar.getAxisLeft().setDrawGridLines(false);

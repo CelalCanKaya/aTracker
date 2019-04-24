@@ -13,6 +13,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".MainScreen"/>
         <activity android:name=".ChartScreen"/>
+        <activity android:name=".MenuBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
