@@ -91,23 +91,6 @@
             android:layout_height="1dp"
             android:background="@android:color/black" />
 
-        <Button
-            android:id="@+id/celalFU"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ödevimVarCCk" />
-
-        <Button
-            android:id="@+id/celalCan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Çoködev bunla eşleş" />
-
-        <ListView
-            android:id="@id/celalList"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
     </LinearLayout>
 
 
