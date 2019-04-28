@@ -13,12 +13,23 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/button1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="Bluetooth"
             tools:layout_editor_absoluteX="161dp"
             tools:layout_editor_absoluteY="172dp" />
+
+        <Button
+            android:id="@+id/liste"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Listele" />
+
+        <ListView
+            android:id="@+id/listeee"
+            android:layout_width="match_parent"
+            android:layout_height="249dp" />
 
     </LinearLayout>
 
