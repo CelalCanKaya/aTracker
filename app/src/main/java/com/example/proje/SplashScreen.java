@@ -1,5 +1,6 @@
 package com.example.proje;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,10 +16,14 @@ public class SplashScreen extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if(!mBluetoothAdapter.isEnabled()) {
+            mBluetoothAdapter.enable();
+        }
         logo = (ImageView) findViewById(R.id.logo);
         Animation myanim = AnimationUtils.loadAnimation(this, R.anim.transition);
         logo.startAnimation(myanim);
-        final Intent i = new Intent(this, ChartScreen.class);
+        final Intent i = new Intent(this, MainScreen.class);
         Thread timer = new Thread(){
             public void run(){
                 try{

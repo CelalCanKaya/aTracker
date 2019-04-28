@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "369638391575",
+    "firebase_url": "https://atracker-43b9e.firebaseio.com",
+    "project_id": "atracker-43b9e",
+    "storage_bucket": "atracker-43b9e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:369638391575:android:fba6ec6c235404d3",
+        "android_client_info": {
+          "package_name": "com.example.proje"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "369638391575-0p38j5vcq5p44hod96go5e3snitc9845.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAIDOxXsqnFB88J40-aYM_FmYGYr6-MlPs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "369638391575-0p38j5vcq5p44hod96go5e3snitc9845.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -12,10 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashScreen"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".bluetooth"></activity>
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".MainScreen"/>
-        <activity android:name=".ChartScreen"/>
+        <activity android:name=".ChartScreen" />
+        <activity android:name=".MenuBar" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,5 +27,9 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-feature android:name="android.hardware.bluetooth" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
 </manifest>
