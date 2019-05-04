@@ -37,12 +37,11 @@
         android:id="@+id/toolbar"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:itemBackground="@android:color/darker_gray"
-        android:background="@android:color/white"
-        app:itemIconTint="@android:color/white"
-        app:menu="@menu/drawermenu"
         android:layout_gravity="start"
-        >
+        android:background="@android:color/white"
+        app:itemBackground="@android:color/darker_gray"
+        app:itemIconTint="@android:color/white"
+        app:menu="@menu/drawermenu">
 
     </android.support.design.widget.NavigationView>
 

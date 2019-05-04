@@ -7,7 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -17,8 +25,12 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 
 /**
@@ -27,6 +39,9 @@ import java.util.List;
 public class ChartFragment extends Fragment {
 
     private BarChart bar;
+    RequestQueue queue;
+    String url;
+    Integer values[] = new Integer[7];
 
     public ChartFragment() {
         // Required empty public constructor
@@ -38,17 +53,57 @@ public class ChartFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_chart, container, false);
-
         bar = view.findViewById(R.id.barChart);
-        getChart();
+        getDatas();
 
         return view;
     }
 
-    private void getChart(){
+    private void getDatas(){
+        JSONObject jsonobj = new JSONObject();
+        queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        url = "http://40.117.95.148:9080/predict";
+        try {
+            jsonobj.put("x_axis", "1");
+            jsonobj.put("y_axis", "2");
+            jsonobj.put("z_axis", "3");
+            System.out.println(jsonobj);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonobj,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            for(int i=0; i<7; i++){
+                                int x = i+1;
+                                values[i]=Integer.parseInt(response.getString("Day_" + x));
+                            }
+                            getChart();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("ERROR");
+                    }
+                }
+        );
+        queue.add(objectRequest);
+        System.out.println("getDatas bitti.");
+    }
+
+    private void getChart() throws InterruptedException {
+        System.out.println("getChart basladı.");
         List<BarEntry> barEntries = new ArrayList<>();
         for(int i=0; i<7; i++){
-            barEntries.add(new BarEntry(i,i));
+            barEntries.add(new BarEntry(i,values[i]));
         }
         BarDataSet barDataSet = new BarDataSet(barEntries, "Steps");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -70,6 +125,4 @@ public class ChartFragment extends Fragment {
         bar.setDescription(description);
         bar.invalidate();
     }
-
-
 }
