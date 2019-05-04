@@ -60,20 +60,24 @@ public class communication extends AppCompatActivity {
                             int ch;
                             while (true) {
                                 ch = inputStream.read();
-                                System.out.println(ch);
+                                //System.out.println(ch);
                                 if (ch == 44) {
                                     x[count]=Integer.parseInt(a);
                                     count++;
+                                    if(count==3)
+                                        count=0;
                                     a="";
                                 }
+                                else if(ch == 65)
+                                    break;
                                 else {
 
                                     if (ch == 10) {
                                         count=0;
-                                        System.out.println(a);
+                                       // System.out.println(a);
                                         length = length + Math.sqrt(x[0] * x[0] + x[1] * x[1] + x[2] * x[2]);
-                                        if (length >= 100) {
-                                            length = length - 100;
+                                        if (length >= 10) {
+                                            length = length - 10;
                                             stepcount += 1;
                                         }
                                         System.out.println(stepcount);
@@ -83,6 +87,7 @@ public class communication extends AppCompatActivity {
                                     a = a + Character.toString((char) ch);
                                 }
                             }
+
                             try {
                                 text.setText(a);
                                 Thread.sleep(200);
@@ -92,6 +97,8 @@ public class communication extends AppCompatActivity {
 
                             a = "";
 
+                            if(ch == 65)
+                                break;
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -151,9 +158,11 @@ public class communication extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... devices) {
             try {
+
                 if (btSocket == null || !isBtConnected) {
                     myBluetooth = BluetoothAdapter.getDefaultAdapter();
                     BluetoothDevice cihaz = myBluetooth.getRemoteDevice(address);
+                    System.out.println(address);
                     btSocket = cihaz.createInsecureRfcommSocketToServiceRecord(myUUID);
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
                     btSocket.connect();
