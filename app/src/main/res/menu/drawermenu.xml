@@ -12,8 +12,4 @@
         android:id="@+id/bluetooth"
         android:title="bluetooth"
         ></item>
-    <item
-        android:id="@+id/webservice"
-        android:title="alperenlergiremez"
-        ></item>
 </menu>
