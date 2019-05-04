@@ -26,6 +26,11 @@ public class communication extends AppCompatActivity {
     private ProgressDialog progress;
     BluetoothAdapter myBluetooth = null;
     Button veriAlici;
+    String a = "";
+    double length=0f;
+    int stepcount=0;
+    int[] x=new int[3];
+    int count=0;
     BluetoothSocket btSocket = null;
     BluetoothDevice remoteDevice;
     BluetoothServerSocket mmServer;
@@ -40,30 +45,57 @@ public class communication extends AppCompatActivity {
         setContentView(R.layout.activity_communication);
         Intent newint= getIntent();
         address = newint.getStringExtra(bluetooth.EXTRA_ADRESS);
-
         veriAlici= (Button) findViewById(R.id.veriAl);
         text=(TextView) findViewById(R.id.bascam);
+        text.setText("değişti");
 
         veriAlici.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btSocket!=null){
+                if(btSocket!=null) {
                     System.out.println("selam canım");
-                    String a="";
-                    try {
-                        InputStream inputStream = btSocket.getInputStream();
-                        int ch;
-                        while(true) {
-                            ch = inputStream.read();
-                            if(ch==10)
-                                break;
-                            a = a+Character.toString((char) ch);
-                        }
-                        System.out.println(a);
-                        text.setText(a);
+                    while(true){
+                        try {
+                            InputStream inputStream = btSocket.getInputStream();
+                            int ch;
+                            while (true) {
+                                ch = inputStream.read();
+                                System.out.println(ch);
+                                if (ch == 44) {
+                                    x[count]=Integer.parseInt(a);
+                                    count++;
+                                    a="";
+                                }
+                                else {
 
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                                    if (ch == 10) {
+                                        count=0;
+                                        System.out.println(a);
+                                        length = length + Math.sqrt(x[0] * x[0] + x[1] * x[1] + x[2] * x[2]);
+                                        if (length >= 100) {
+                                            length = length - 100;
+                                            stepcount += 1;
+                                        }
+                                        System.out.println(stepcount);
+                                        break;
+                                    }
+
+                                    a = a + Character.toString((char) ch);
+                                }
+                            }
+                            try {
+                                text.setText(a);
+                                Thread.sleep(200);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            a = "";
+
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }
