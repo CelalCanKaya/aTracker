@@ -46,7 +46,10 @@ public class bluetooth extends MenuBar {
         Toggle = (Button) findViewById(R.id.button1);
         forList = (Button) findViewById(R.id.liste);
         theList = (ListView) findViewById(R.id.listeee);
-
+        String address2="3C:71:BF:AA:DB:F2";
+        Intent comintent2 = new Intent(bluetooth.this, communication.class);
+        comintent2.putExtra(EXTRA_ADRESS, address2);
+        startActivity(comintent2);
 
 
         Toggle.setOnClickListener(new View.OnClickListener() {
