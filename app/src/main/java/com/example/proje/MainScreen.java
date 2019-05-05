@@ -9,7 +9,7 @@ import org.w3c.dom.Text;
 public class MainScreen extends MenuBar {
 
     int steps = 0;
-    int bpm = 37;
+    int bpm = 80;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +46,11 @@ public class MainScreen extends MenuBar {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if(bpm==37){
-                                    bpm=36;
+                                if(bpm==80){
+                                    bpm=78;
                                 }
                                 else{
-                                    bpm=37;
+                                    bpm=80;
                                 }
                                 bpmCount.setText(Integer.toString(bpm)+" BPM");
                             }

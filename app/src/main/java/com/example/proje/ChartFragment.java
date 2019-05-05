@@ -54,8 +54,13 @@ public class ChartFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_chart, container, false);
         bar = view.findViewById(R.id.barChart);
-        getDatas();
-
+        //getDatas();
+        //ALTTAKİ SATIR SİLİNECEK
+        try {
+            getChart();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return view;
     }
 
@@ -80,12 +85,12 @@ public class ChartFragment extends Fragment {
                                 int x = i+1;
                                 values[i]=Integer.parseInt(response.getString("Day_" + x));
                             }
-                            getChart();
+                            //getChart();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        } catch (InterruptedException e) {
+                        } /*catch (InterruptedException e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
                 },
                 new Response.ErrorListener() {
@@ -96,14 +101,12 @@ public class ChartFragment extends Fragment {
                 }
         );
         queue.add(objectRequest);
-        System.out.println("getDatas bitti.");
     }
 
     private void getChart() throws InterruptedException {
-        System.out.println("getChart basladı.");
         List<BarEntry> barEntries = new ArrayList<>();
         for(int i=0; i<7; i++){
-            barEntries.add(new BarEntry(i,values[i]));
+            barEntries.add(new BarEntry(i,i));
         }
         BarDataSet barDataSet = new BarDataSet(barEntries, "Steps");
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
