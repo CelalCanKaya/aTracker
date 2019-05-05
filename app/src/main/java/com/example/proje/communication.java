@@ -75,9 +75,9 @@ public class communication extends AppCompatActivity {
                                     if (ch == 10) {
                                         count=0;
                                        // System.out.println(a);
-                                        length = length + Math.sqrt(x[0] * x[0] + x[1] * x[1] + x[2] * x[2]);
+                                        length =  Math.sqrt(x[0] * x[0] + x[1] * x[1] + x[2] * x[2]);
                                         if (length >= 10) {
-                                            length = length - 10;
+                                            //length = length - 10;
                                             stepcount += 1;
                                         }
                                         System.out.println(stepcount);
