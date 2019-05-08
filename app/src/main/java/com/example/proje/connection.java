@@ -19,10 +19,11 @@ import es.dmoral.toasty.Toasty;
 
 public class connection extends AppCompatActivity {
 
+    String address2="84:0D:8E:2C:03:96";
     String address="3C:71:BF:AA:DB:F2";
     public AlertDialog alertDia;
     BluetoothAdapter myBluetooth = null;
-    BluetoothSocket btSocket = null;
+    static BluetoothSocket btSocket = null;
     private boolean isBtConnected = false;
     static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
@@ -71,6 +72,7 @@ public class connection extends AppCompatActivity {
                 Intent menu = new Intent(getApplicationContext(), MainScreen.class);
                 startActivity(menu);
                 Toasty.error(getApplicationContext(), "ESP32 İle Bağlantı Kurulamadı.", Toast.LENGTH_SHORT, true).show();
+                btSocket=null;
                 finish();
             } else {
                 Intent menu = new Intent(getApplicationContext(), MainScreen.class);
