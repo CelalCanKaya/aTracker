@@ -2,9 +2,6 @@ package com.example.proje;
 
 import android.os.Bundle;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -26,16 +23,12 @@ public class MainScreen extends MenuBar {
         super.menuBar();
         final TextView sCount = (TextView) findViewById(R.id.stepCounter);
         final TextView bpmCount = (TextView) findViewById(R.id.beatCount);
-        if(connection.btSocket!=null){
-            System.out.println("LALALALALALALALALALALLALALALAL");
-        }
         // Suanki adım sayısını almamız lazım.
         thread1 = new Thread(new Runnable() {
             @Override
             public void run()
             {
                 if(connection.btSocket!=null) {
-                    System.out.println("selam canım");
                     while(true){
                         try {
                             InputStream inputStream = connection.btSocket.getInputStream();
