@@ -19,13 +19,13 @@ import es.dmoral.toasty.Toasty;
 
 public class connection extends AppCompatActivity {
 
-    String address2="84:0D:8E:2C:03:96";
-    String address="3C:71:BF:AA:DB:F2";
+    static String address="84:0D:8E:2C:03:96";
+    static String address2="3C:71:BF:AA:DB:F2";
     public AlertDialog alertDia;
-    BluetoothAdapter myBluetooth = null;
+    static BluetoothAdapter myBluetooth = null;
     static BluetoothSocket btSocket = null;
-    private boolean isBtConnected = false;
-    static final UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    static boolean isBtConnected = false;
+    final static UUID myUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
 
     @Override
@@ -33,8 +33,8 @@ public class connection extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
         new BTbaglan().execute();
-
     }
+
 
     @SuppressLint("StaticFieldLeak")
     private class BTbaglan extends AsyncTask<Void, Void, Void> {
@@ -54,7 +54,6 @@ public class connection extends AppCompatActivity {
                 if (btSocket == null || !isBtConnected) {
                     myBluetooth = BluetoothAdapter.getDefaultAdapter();
                     BluetoothDevice cihaz = myBluetooth.getRemoteDevice(address);
-                    System.out.println(address);
                     btSocket = cihaz.createInsecureRfcommSocketToServiceRecord(myUUID);
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
                     btSocket.connect();
@@ -73,6 +72,7 @@ public class connection extends AppCompatActivity {
                 startActivity(menu);
                 Toasty.error(getApplicationContext(), "ESP32 İle Bağlantı Kurulamadı.", Toast.LENGTH_SHORT, true).show();
                 btSocket=null;
+                isBtConnected = false;
                 finish();
             } else {
                 Intent menu = new Intent(getApplicationContext(), MainScreen.class);

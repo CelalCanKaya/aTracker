@@ -1,6 +1,10 @@
 package com.example.proje;
 
+import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +19,8 @@ public class MainScreen extends MenuBar {
     int[] x=new int[3];
     int count=0;
     Thread thread1;
+    ImageView isConnectedImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +29,18 @@ public class MainScreen extends MenuBar {
         super.menuBar();
         final TextView sCount = (TextView) findViewById(R.id.stepCounter);
         final TextView bpmCount = (TextView) findViewById(R.id.beatCount);
+        isConnectedImage = (ImageView) findViewById(R.id.isConnected);
+        final Button connectButton = findViewById(R.id.connectButton);
+        connectButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                if(connection.btSocket==null) {
+                    if (!mBluetoothAdapter.isEnabled()) {
+                        mBluetoothAdapter.enable();
+                    }
+                }
+            }
+        });
         // Suanki adım sayısını almamız lazım.
         thread1 = new Thread(new Runnable() {
             @Override
@@ -33,8 +51,11 @@ public class MainScreen extends MenuBar {
                         try {
                             InputStream inputStream = connection.btSocket.getInputStream();
                             int ch;
+                            ch=-1;
                             while (true) {
-                                ch = inputStream.read();
+                                if(connection.btSocket!=null) {
+                                    ch = inputStream.read();
+                                }
                                 // System.out.println(ch);
                                 if (ch == 44) {
                                     x[count]=Integer.parseInt(a);
