@@ -18,6 +18,7 @@ public class MainScreen extends MenuBar {
     int stepcount=0;
     int[] x=new int[3];
     int count=0;
+    int flag=0;
     Thread thread1;
     ImageView isConnectedImage;
 
@@ -47,9 +48,14 @@ public class MainScreen extends MenuBar {
             public void run()
             {
                 if(connection.btSocket!=null) {
+                    InputStream inputStream = null;
+                    try {
+                        inputStream = connection.btSocket.getInputStream();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     while(true){
                         try {
-                            InputStream inputStream = connection.btSocket.getInputStream();
                             int ch;
                             ch=-1;
                             while (true) {
@@ -65,6 +71,8 @@ public class MainScreen extends MenuBar {
                                         count=0;
                                     a="0";
                                 }
+                                else if(ch == 45)
+                                   a="-"+a;
                                 else if(ch == 65)
                                     break;
                                 else {
@@ -74,17 +82,18 @@ public class MainScreen extends MenuBar {
                                         bpm=Integer.parseInt(a);
                                         // System.out.println(a);
                                         length =  Math.sqrt(x[0] * x[0] + x[1] * x[1] + x[2] * x[2]);
-                                        if (length >= 10) {
+                                        if (flag==0&&x[2]>9000||x[2]<3000) {
                                             stepcount += 1;
-
+                                            flag =1;
+                                        }
+                                        else if(x[2]<7500&&x[2]>5000){
+                                            flag=0;
                                         }
                                         System.out.println(stepcount);
                                         break;
                                     }
                                     if(ch>=48&&ch<=57)
                                         a = a + Character.toString((char) ch);
-                                    else
-                                        a = 0+a;
                                 }
                             }
 
@@ -96,7 +105,7 @@ public class MainScreen extends MenuBar {
                             }
                             if(ch == 65)
                                 break;
-                            a = "";
+                            a = "0";
 
 
                         } catch (IOException e) {
