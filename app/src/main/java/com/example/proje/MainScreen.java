@@ -1,14 +1,27 @@
 package com.example.proje;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import dmax.dialog.SpotsDialog;
+import es.dmoral.toasty.Toasty;
 
 
 public class MainScreen extends MenuBar {
@@ -29,7 +42,7 @@ public class MainScreen extends MenuBar {
     int CountX=0;
     Thread thread1;
     ImageView isConnectedImage;
-
+    public AlertDialog alertDia;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +63,8 @@ public class MainScreen extends MenuBar {
                 }
             }
         });
+        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        registerReceiver(mReceiver, filter);
         // Suanki adım sayısını almamız lazım.
         thread1 = new Thread(new Runnable() {
             @Override
@@ -72,7 +87,7 @@ public class MainScreen extends MenuBar {
                             ch=-1;
                             int zOld=0;
                             while (true) {
-                                if (connection.btSocket.()) {
+                                if (connection.isBtConnected) {
                                     ch = inputStream.read();
                                 }
                                 if (ch == 44) {
@@ -92,7 +107,13 @@ public class MainScreen extends MenuBar {
                                     if (ch == 46) {
                                         count = 0;
                                         bpm = Integer.parseInt(a);
-                                        System.out.println(x[2]+" yy "+x[1] + " x " +x[0]);
+                                        double ax,ay,az;
+                                        ax=(double)x[0]/8192;
+                                        ay=(double)x[1]/8192;
+                                        az=(double)x[2]/8192;
+                                        double kar = ax * ax + ay * ay + az * az;
+                                        double kok=(Math.sqrt(kar));
+                                        System.out.println("kare"+kok);
                                         //System.out.println(x[1]);
                                            /* if(CountX<2){
                                                 CountX++;
@@ -112,12 +133,12 @@ public class MainScreen extends MenuBar {
                                         zminNorm=6600-600;
                                         zmax=6600+1200;
                                         zmin=6600-1200;
-                                        if (flag == 0 && ((x[2] > zmax || x[2] < zmin)||(zOld!=0&&x[2]-zOld>3000))) {
+                                        if (flag == 0 && (kok>1)) {
                                             stepcount += 1;
                                             zOld=x[2];
                                             System.out.println(stepcount);
                                             flag = 1;
-                                        } else if (x[2] < zmaxNorm && x[2] > zminNorm) {
+                                        } else if (kok<0.7f) {
                                             flag = 0;
                                         }
                                         break;
@@ -135,7 +156,7 @@ public class MainScreen extends MenuBar {
                         }
                         try {
                             // text.setText(a);
-                            Thread.sleep(30);
+                            Thread.sleep(40);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -166,5 +187,84 @@ public class MainScreen extends MenuBar {
         };
         thread1.start();
         t.start();
+    }
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int bluetoothState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                        BluetoothAdapter.ERROR);
+                switch (bluetoothState) {
+                    case BluetoothAdapter.STATE_ON:
+                        try {
+                            if(connection.btSocket != null){
+                                connection.btSocket.connect();
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        connection.isBtConnected=true;
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        /*try {
+                            connection.btSocket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        connection.btSocket = null;*/
+                        connection.isBtConnected=false;
+                        break;
+                }
+            }
+        }
+    };
+
+    @SuppressLint("StaticFieldLeak")
+    private class BTbaglan extends AsyncTask<Void, Void, Void> {
+        private boolean ConnectSuccess = true;
+
+        @Override
+        protected void onPreExecute() {
+            alertDia = new SpotsDialog.Builder().setContext(MainScreen.this).build();
+            alertDia.setMessage("Connecting With aTracker.");
+            alertDia.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... devices) {
+            try {
+                if (connection.btSocket == null || !connection.isBtConnected) {
+                    System.out.println("BASAMAK 1 BAŞARILI.");
+                    connection.myBluetooth = BluetoothAdapter.getDefaultAdapter();
+                    System.out.println("BASAMAK 2 BAŞARILI.");
+                    BluetoothDevice cihaz = connection.myBluetooth.getRemoteDevice(connection.address);
+                    System.out.println("BASAMAK 3 BAŞARILI.");
+                    connection.btSocket = cihaz.createInsecureRfcommSocketToServiceRecord(connection.myUUID);
+                    System.out.println("BASAMAK 5 BAŞARILI.");
+                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+                    System.out.println("BASAMAK 6 BAŞARILI.");
+                    connection.btSocket.connect();
+                    System.out.println("BASAMAK 7 BAŞARILI.");
+                }
+            } catch (IOException e) {
+                ConnectSuccess = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            if (!ConnectSuccess) {
+                Toasty.error(getApplicationContext(), "ESP32 İle Bağlantı Kurulamadı.", Toast.LENGTH_SHORT, true).show();
+            } else {
+                Toasty.success(getApplicationContext(), "ESP32 İle Bağlantı Kuruldu.", Toast.LENGTH_SHORT, true).show();
+                connection.isBtConnected=true;
+            }
+            alertDia.dismiss();
+        }
+
     }
 }

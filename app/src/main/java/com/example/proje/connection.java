@@ -19,8 +19,8 @@ import es.dmoral.toasty.Toasty;
 
 public class connection extends AppCompatActivity {
 
-    static String address2="84:0D:8E:2C:03:96";
-    static String address="3C:71:BF:AA:DB:F2";
+    static String address="84:0D:8E:2C:03:96";
+    static String address2="3C:71:BF:AA:DB:F2";
     public AlertDialog alertDia;
     static BluetoothAdapter myBluetooth = null;
     static BluetoothSocket btSocket = null;
@@ -85,4 +85,6 @@ public class connection extends AppCompatActivity {
         }
 
     }
+
+
 }
