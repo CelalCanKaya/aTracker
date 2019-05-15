@@ -72,34 +72,28 @@ public class MainScreen extends MenuBar {
                             ch=-1;
                             int zOld=0;
                             while (true) {
-                                    if (connection.btSocket != null) {
-                                        ch = inputStream.read();
+                                if (connection.btSocket.()) {
+                                    ch = inputStream.read();
+                                }
+                                if (ch == 44) {
+                                    x[count] = Integer.parseInt(a);
+                                    //System.out.println(a);
+                                    count++;
+                                    if (count == 3) {
+                                        arrList.add(x[2]);
+                                        count = 0;
                                     }
-                                    if (ch == 44) {
-                                        x[count] = Integer.parseInt(a);
-                                        //System.out.println(a);
-                                        count++;
-                                        if (count == 3) {
-                                            arrList.add(x[2]);
-                                            count = 0;
-                                        }
-                                        a = "0";
-                                    } else if (ch == 45)
-                                        a = "-" + a;
-                                    else if (ch == 65)
-                                        break;
-                                    else {
-                                        if (ch == 46) {
-                                            count = 0;
-                                            bpm = Integer.parseInt(a);
-                                            double ax,ay,az;
-                                            ax=(double)x[0]/8192;
-                                            ay=(double)x[1]/8192;
-                                            az=(double)x[2]/8192;
-                                            double kar = ax * ax + ay * ay + az * az;
-                                            double kok=(Math.sqrt(kar));
-                                            System.out.println("kare"+kok);
-                                            //System.out.println(x[1]);
+                                    a = "0";
+                                } else if (ch == 45)
+                                    a = "-" + a;
+                                else if (ch == 65)
+                                    break;
+                                else {
+                                    if (ch == 46) {
+                                        count = 0;
+                                        bpm = Integer.parseInt(a);
+                                        System.out.println(x[2]+" yy "+x[1] + " x " +x[0]);
+                                        //System.out.println(x[1]);
                                            /* if(CountX<2){
                                                 CountX++;
                                                 if(CountX==2){
@@ -114,24 +108,24 @@ public class MainScreen extends MenuBar {
 
                                                 }
                                             }*/
-                                            zmaxNorm=6600+600;
-                                            zminNorm=6600-600;
-                                            zmax=6600+1200;
-                                            zmin=6600-1200;
-                                            if (flag == 0 && (kok>1)) {
-                                                stepcount += 1;
-                                                zOld=x[2];
-                                                System.out.println(stepcount);
-                                                flag = 1;
-                                            } else if (kok<0.7f) {
-                                                flag = 0;
-                                            }
-                                            break;
+                                        zmaxNorm=6600+600;
+                                        zminNorm=6600-600;
+                                        zmax=6600+1200;
+                                        zmin=6600-1200;
+                                        if (flag == 0 && ((x[2] > zmax || x[2] < zmin)||(zOld!=0&&x[2]-zOld>3000))) {
+                                            stepcount += 1;
+                                            zOld=x[2];
+                                            System.out.println(stepcount);
+                                            flag = 1;
+                                        } else if (x[2] < zmaxNorm && x[2] > zminNorm) {
+                                            flag = 0;
                                         }
-                                        if (ch >= 48 && ch <= 57) {
-                                            a = a + Character.toString((char) ch);
-                                        }
+                                        break;
                                     }
+                                    if (ch >= 48 && ch <= 57) {
+                                        a = a + Character.toString((char) ch);
+                                    }
+                                }
                                 if (ch == 65)
                                     break;
 
@@ -141,7 +135,7 @@ public class MainScreen extends MenuBar {
                         }
                         try {
                             // text.setText(a);
-                            Thread.sleep(40);
+                            Thread.sleep(30);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
