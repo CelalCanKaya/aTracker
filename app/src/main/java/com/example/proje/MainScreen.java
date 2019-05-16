@@ -127,8 +127,8 @@ public class MainScreen extends MenuBar {
                                     y=Double.parseDouble(arrY[i])/8192;
                                     z=Double.parseDouble(arrZ[i])/8192;
                                     double res=Math.sqrt(x*x+y*y+z*z);
-                                    System.out.println("x celal"+arrX[i]+"-"+x+" y can"+arrY[i]+" z kaya"+arrZ[i]+"Sonuc"+res);
-                                    if(flag==0&&res>1f){
+                                    //System.out.println("x celal"+arrX[i]+"-"+x+" y can"+arrY[i]+" z kaya"+arrZ[i]+"Sonuc"+res);
+                                    if(flag==0&&res>0.98f){
                                         stepcount++;
                                         flag=1;
                                     }
