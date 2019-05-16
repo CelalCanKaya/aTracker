@@ -27,7 +27,7 @@ import com.github.mzule.fantasyslide.SimpleFantasyListener;
 public abstract class MenuBar extends AppCompatActivity {
     protected DrawerLayout mdrawerLayout;
     private StackTraceElement[] stackTraceElements;
-    public TextView text0, text1, text2, text6;
+    public TextView text0, text1, text2,text3, text6;
 
 
     protected void menuBar() {
@@ -39,6 +39,7 @@ public abstract class MenuBar extends AppCompatActivity {
         text0 = findViewById(R.id.but0);
         text1 = findViewById(R.id.but1);
         text2 = findViewById(R.id.but2);
+        text3 = findViewById(R.id.but3);
         text6 = findViewById(R.id.but6);
         setListener();
         mdrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -63,30 +64,42 @@ public abstract class MenuBar extends AppCompatActivity {
                     text0.setTextColor(Color.RED);
                     text1.setTextColor(Color.WHITE);
                     text2.setTextColor(Color.WHITE);
+                    text3.setTextColor(Color.WHITE);
                     text6.setTextColor(Color.WHITE);
                 }
                 else if(index==1){
                     text0.setTextColor(Color.WHITE);
                     text1.setTextColor(Color.RED);
                     text2.setTextColor(Color.WHITE);
+                    text3.setTextColor(Color.WHITE);
                     text6.setTextColor(Color.WHITE);
                 }
                 else if(index==2){
                     text0.setTextColor(Color.WHITE);
                     text1.setTextColor(Color.WHITE);
                     text2.setTextColor(Color.RED);
+                    text3.setTextColor(Color.WHITE);
+                    text6.setTextColor(Color.WHITE);
+                }
+                else if(index==3){
+                    text0.setTextColor(Color.WHITE);
+                    text1.setTextColor(Color.WHITE);
+                    text2.setTextColor(Color.WHITE);
+                    text3.setTextColor(Color.RED);
                     text6.setTextColor(Color.WHITE);
                 }
                 else if(index==6){
                     text0.setTextColor(Color.WHITE);
                     text1.setTextColor(Color.WHITE);
                     text2.setTextColor(Color.WHITE);
+                    text3.setTextColor(Color.WHITE);
                     text6.setTextColor(Color.RED);
                 }
                 else{
                     text0.setTextColor(Color.WHITE);
                     text1.setTextColor(Color.WHITE);
                     text2.setTextColor(Color.WHITE);
+                    text3.setTextColor(Color.WHITE);
                     text6.setTextColor(Color.WHITE);
                 }
                 return false;
@@ -109,6 +122,15 @@ public abstract class MenuBar extends AppCompatActivity {
                 } else if (index == 2) {
                     if(!stackTraceElements[3].getClassName().equals(ChartScreen.class.getName())){
                         Intent menu = new Intent(getApplicationContext(), ChartScreen.class);
+                        startActivity(menu);
+                        finish();
+                    }
+                    else{
+                        mdrawerLayout.closeDrawer(GravityCompat.START);
+                    }
+                } else if (index == 3) {
+                    if(!stackTraceElements[3].getClassName().equals(Settings.class.getName())){
+                        Intent menu = new Intent(getApplicationContext(), Settings.class);
                         startActivity(menu);
                         finish();
                     }

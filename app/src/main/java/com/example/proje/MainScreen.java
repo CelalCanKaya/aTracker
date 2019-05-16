@@ -16,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -90,67 +94,20 @@ public class MainScreen extends MenuBar {
                             while (true) {
                                 if (connection.isBtConnected) {
                                     ch = inputStream.read();
+                                    a = a + Character.toString((char) ch);
                                 }
-                                if (ch == 44) {
-                                    x[count] = Integer.parseInt(a);
-                                    //System.out.println(a);
-                                    count++;
-                                    if (count == 3) {
-                                        arrList.add(x[2]);
-                                        count = 0;
-                                    }
-                                    a = "0";
-                                } else if (ch == 45)
-                                    a = "-" + a;
-                                else if (ch == 65)
-                                    break;
-                                else {
-                                    if (ch == 46) {
-                                        count = 0;
-                                        bpm = Integer.parseInt(a);
-                                        double ax,ay,az;
-                                        ax=(double)x[0]/8192;
-                                        ay=(double)x[1]/8192;
-                                        az=(double)x[2]/8192;
-                                        double kar = ax * ax + ay * ay + az * az;
-                                        double kok=(Math.sqrt(kar));
-                                        System.out.println("kare"+kok);
-                                        //System.out.println(x[1]);
-                                           /* if(CountX<2){
-                                                CountX++;
-                                                if(CountX==2){
-                                                    int avg=0;
-                                                    int total=0;
-                                                    for(int i = 0; i < arrList.size(); i++)
-                                                    {
-                                                        total = total + (int)arrList.get(i);
-                                                        avg = total / arrList.size();
-                                                    }
-                                                    System.out.println("AVG BU KARDEŞİM"+avg);
-
-                                                }
-                                            }*/
-                                        zmaxNorm=6600+600;
-                                        zminNorm=6600-600;
-                                        zmax=6600+1200;
-                                        zmin=6600-1200;
-                                        if (flag == 0 && (kok>1)) {
-                                            stepcount += 1;
-                                            zOld=x[2];
-                                            System.out.println(stepcount);
-                                            flag = 1;
-                                        } else if (kok<0.7f) {
-                                            flag = 0;
-                                        }
-                                        break;
-                                    }
-                                    if (ch >= 48 && ch <= 57) {
-                                        a = a + Character.toString((char) ch);
-                                    }
-                                }
-                                if (ch == 65)
+                                if (ch == 42)
                                     break;
 
+
+                            }
+                            System.out.println(a);
+                            a="";
+                            JsonParser parser = new JsonParser();
+                            JsonElement element = parser.parse(a);
+                            if(element.isJsonObject()){
+                                JsonObject jsonObject = element.getAsJsonObject();
+                                System.out.println(jsonObject.get("x_axis"));
                             }
                         } catch (IOException e) {
 
