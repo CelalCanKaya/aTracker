@@ -16,10 +16,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,12 +58,16 @@ public class MainScreen extends MenuBar {
     Thread thread1;
     ImageView isConnectedImage;
     public AlertDialog alertDia;
+    String url;
+    RequestQueue queue;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
         super.menuBar();
+        url = "http://40.117.95.148:9080/predict";
         final TextView sCount = (TextView) findViewById(R.id.stepCounter);
         final TextView bpmCount = (TextView) findViewById(R.id.beatCount);
         isConnectedImage = (ImageView) findViewById(R.id.isConnected);
@@ -105,6 +117,31 @@ public class MainScreen extends MenuBar {
                             System.out.println(a);
                             try {
                                 JSONObject jsonObject = new JSONObject(a);
+                                JSONArray arrJson = jsonObject.getJSONArray("x_axis");
+                                String[] arr = new String[arrJson.length()];
+                                for(int i = 0; i < arrJson.length(); i++){
+                                    arr[i] = arrJson.getString(i);
+                                }
+                                queue = Volley.newRequestQueue(getApplicationContext());
+                                JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
+                                        new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
+                                                System.out.println("SERVER RESPONSE: " + response);
+                                            }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                System.out.println("ERROR");
+                                            }
+                                        }
+                                );
+                                objectRequest.setRetryPolicy(new DefaultRetryPolicy(
+                                        0,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                                queue.add(objectRequest);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -123,6 +160,7 @@ public class MainScreen extends MenuBar {
                 }
             }
         });
+
         Thread t = new Thread() {
             @Override
             public void run() {
