@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 public class Settings extends MenuBar {
 
+    private static final String FILE_NAME = "example.txt";
     EditText heightText;
     EditText weightText;
 

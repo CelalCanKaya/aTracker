@@ -92,14 +92,12 @@ public class MainScreen extends MenuBar {
                             ch=-1;
                             int zOld=0;
                             while (true) {
+                                if (ch == 42)
+                                    break;
                                 if (connection.isBtConnected) {
                                     ch = inputStream.read();
                                     a = a + Character.toString((char) ch);
                                 }
-                                if (ch == 42)
-                                    break;
-
-
                             }
                             System.out.println(a);
                             a="";
