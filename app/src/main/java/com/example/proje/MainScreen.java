@@ -170,6 +170,12 @@ public class MainScreen extends MenuBar {
         control.start();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
+    }
+
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
