@@ -20,6 +20,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -92,21 +95,20 @@ public class MainScreen extends MenuBar {
                             ch=-1;
                             int zOld=0;
                             while (true) {
-                                if (ch == 42)
-                                    break;
                                 if (connection.isBtConnected) {
                                     ch = inputStream.read();
+                                    if (ch == 42)
+                                        break;
                                     a = a + Character.toString((char) ch);
                                 }
                             }
                             System.out.println(a);
-                            a="";
-                            JsonParser parser = new JsonParser();
-                            JsonElement element = parser.parse(a);
-                            if(element.isJsonObject()){
-                                JsonObject jsonObject = element.getAsJsonObject();
-                                System.out.println(jsonObject.get("x_axis"));
+                            try {
+                                JSONObject jsonObject = new JSONObject(a);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
+                            a="";
                         } catch (IOException e) {
 
                         }
