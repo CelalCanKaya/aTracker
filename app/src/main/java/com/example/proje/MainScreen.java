@@ -117,10 +117,17 @@ public class MainScreen extends MenuBar {
                             System.out.println(a);
                             try {
                                 JSONObject jsonObject = new JSONObject(a);
-                                JSONArray arrJson = jsonObject.getJSONArray("x_axis");
-                                String[] arr = new String[arrJson.length()];
-                                for(int i = 0; i < arrJson.length(); i++){
-                                    arr[i] = arrJson.getString(i);
+                                JSONArray arrJsonX = jsonObject.getJSONArray("x_axis");
+                                JSONArray arrJsonY = jsonObject.getJSONArray("y_axis");
+                                JSONArray arrJsonZ = jsonObject.getJSONArray("z_axis");
+                                String[] arrX = new String[arrJsonX.length()];
+                                String[] arrY = new String[arrJsonY.length()];
+                                String[] arrZ = new String[arrJsonZ.length()];
+                                for(int i = 0; i < arrJsonX.length(); i++){
+                                    arrX[i] = arrJsonX.getString(i);
+                                    arrY[i] = arrJsonY.getString(i);
+                                    arrZ[i] = arrJsonZ.getString(i);
+                                    System.out.println("x celal"+arrX[i]+" y can"+arrY[i]+" z kaya"+arrZ[i]);
                                 }
                                 queue = Volley.newRequestQueue(getApplicationContext());
                                 JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
