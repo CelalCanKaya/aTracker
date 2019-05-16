@@ -1,6 +1,7 @@
 
 package com.example.proje;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -116,6 +117,10 @@ public abstract class MenuBar extends AppCompatActivity {
                     }
                 } else if (index == 6){
                     finishAndRemoveTask();
+                    BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                    if (mBluetoothAdapter.isEnabled()) {
+                        mBluetoothAdapter.disable();
+                    }
                     System.exit(0);
                 }
                 return false;

@@ -56,10 +56,11 @@ public class MainScreen extends MenuBar {
         connectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                if(connection.btSocket==null) {
-                    if (!mBluetoothAdapter.isEnabled()) {
-                        mBluetoothAdapter.enable();
-                    }
+                if (!mBluetoothAdapter.isEnabled()) {
+                    mBluetoothAdapter.enable();
+                }
+                else{
+                    Toasty.info(getApplicationContext(), "Bluetooth Is Already Active!", Toast.LENGTH_SHORT, true).show();
                 }
             }
         });
@@ -152,7 +153,7 @@ public class MainScreen extends MenuBar {
 
                             }
                         } catch (IOException e) {
-                            e.printStackTrace();
+
                         }
                         try {
                             // text.setText(a);
@@ -185,8 +186,31 @@ public class MainScreen extends MenuBar {
                 }
             }
         };
+        Thread control = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (!isInterrupted()) {
+                        Thread.sleep(50);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                    if(connection.isBtConnected){
+                                        isConnectedImage.setImageResource(R.drawable.connect);
+                                    }
+                                    else{
+                                        isConnectedImage.setImageResource(R.drawable.disconnect);
+                                    }
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                }
+            }
+        };
         thread1.start();
         t.start();
+        control.start();
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -198,22 +222,9 @@ public class MainScreen extends MenuBar {
                         BluetoothAdapter.ERROR);
                 switch (bluetoothState) {
                     case BluetoothAdapter.STATE_ON:
-                        try {
-                            if(connection.btSocket != null){
-                                connection.btSocket.connect();
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        connection.isBtConnected=true;
+                        new BTbaglan().execute();
                         break;
                     case BluetoothAdapter.STATE_TURNING_OFF:
-                        /*try {
-                            connection.btSocket.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        connection.btSocket = null;*/
                         connection.isBtConnected=false;
                         break;
                 }
@@ -235,18 +246,11 @@ public class MainScreen extends MenuBar {
         @Override
         protected Void doInBackground(Void... devices) {
             try {
-                if (connection.btSocket == null || !connection.isBtConnected) {
-                    System.out.println("BASAMAK 1 BAŞARILI.");
-                    connection.myBluetooth = BluetoothAdapter.getDefaultAdapter();
-                    System.out.println("BASAMAK 2 BAŞARILI.");
-                    BluetoothDevice cihaz = connection.myBluetooth.getRemoteDevice(connection.address);
-                    System.out.println("BASAMAK 3 BAŞARILI.");
-                    connection.btSocket = cihaz.createInsecureRfcommSocketToServiceRecord(connection.myUUID);
-                    System.out.println("BASAMAK 5 BAŞARILI.");
-                    BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
-                    System.out.println("BASAMAK 6 BAŞARILI.");
+                if(connection.btSocket != null){
                     connection.btSocket.connect();
-                    System.out.println("BASAMAK 7 BAŞARILI.");
+                }
+                else{
+                    ConnectSuccess = false;
                 }
             } catch (IOException e) {
                 ConnectSuccess = false;
