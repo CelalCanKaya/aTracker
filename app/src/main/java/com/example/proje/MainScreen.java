@@ -41,19 +41,12 @@ import es.dmoral.toasty.Toasty;
 
 public class MainScreen extends MenuBar {
 
-    int bpm = 0;
+    String bpm = "";
     String a = "";
     double length=0f;
     int stepcount=0;
-    int[] x=new int[3];
     int count=0;
     int flag=0;
-    int zmax=0;
-    int zmin=0;
-    int zmaxNorm=0;
-    int zminNorm=0;
-    int ymax=0;
-    int ymin=0;
     int CountX=0;
     Thread thread1;
     ImageView isConnectedImage;
@@ -127,7 +120,23 @@ public class MainScreen extends MenuBar {
                                     arrX[i] = arrJsonX.getString(i);
                                     arrY[i] = arrJsonY.getString(i);
                                     arrZ[i] = arrJsonZ.getString(i);
-                                    System.out.println("x celal"+arrX[i]+" y can"+arrY[i]+" z kaya"+arrZ[i]);
+                                    bpm=jsonObject.get("pulse_meter").toString();
+
+                                    double x,y,z;
+                                    x=Double.parseDouble(arrX[i])/8192;
+                                    y=Double.parseDouble(arrY[i])/8192;
+                                    z=Double.parseDouble(arrZ[i])/8192;
+                                    double res=Math.sqrt(x*x+y*y+z*z);
+                                    System.out.println("x celal"+arrX[i]+"-"+x+" y can"+arrY[i]+" z kaya"+arrZ[i]+"Sonuc"+res);
+                                    if(flag==0&&res>1f){
+                                        stepcount++;
+                                        flag=1;
+                                    }
+                                    else if(res<0.85f){
+                                        flag=0;
+                                    }
+
+
                                 }
                                 queue = Volley.newRequestQueue(getApplicationContext());
                                 JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,
@@ -158,7 +167,7 @@ public class MainScreen extends MenuBar {
                         }
                         try {
                             // text.setText(a);
-                            Thread.sleep(40);
+                            Thread.sleep(20);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
