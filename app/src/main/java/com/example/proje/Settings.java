@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.view.View;
 import android.widget.EditText;
 
 public class Settings extends MenuBar {
@@ -19,6 +20,10 @@ public class Settings extends MenuBar {
         super.menuBar();
         heightText = (EditText) findViewById(R.id.heightText);
         weightText = (EditText) findViewById(R.id.weightText);
+    }
+
+    public void save(View v){
+        Integer height = Integer.parseInt(heightText.getText().toString());
     }
 
 }

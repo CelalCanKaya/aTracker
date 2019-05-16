@@ -47,8 +47,9 @@ public class ChartFragment extends Fragment {
     private static PieChart pie;
     RequestQueue queue;
     String url;
-    Integer values[] = new Integer[7];
+    static Integer values[] = new Integer[7];
     static int chartNum = 0;
+
 
     public ChartFragment() {
         // Required empty public constructor
@@ -62,43 +63,42 @@ public class ChartFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_chart, container, false);
         bar = view.findViewById(R.id.barChart);
         pie = view.findViewById(R.id.pieChart);
-        //getDatas();
-        //ALTTAKİ SATIR SİLİNECEK
-        try {
-            getChart(chartNum);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        getDatas();
         return view;
     }
 
     private void getDatas(){
         JSONObject jsonobj = new JSONObject();
-        queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        url = "http://40.117.95.148:9080/predict";
         try {
-            jsonobj.put("x_axis", "1");
-            jsonobj.put("y_axis", "2");
-            jsonobj.put("z_axis", "3");
-            System.out.println(jsonobj);
+            jsonobj.put("request", "1");
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        url = "http://40.117.95.148:9080/checkLog";
         JsonObjectRequest objectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonobj,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            System.out.println(response);
                             for(int i=0; i<7; i++){
                                 int x = i+1;
                                 values[i]=Integer.parseInt(response.getString("Day_" + x));
                             }
-                            //getChart();
+                            String[] texts = new String[5];
+                            texts[0] = response.getString("Jumping");
+                            texts[1] = response.getString("Walking");
+                            texts[2] = response.getString("Up");
+                            texts[3] = response.getString("Down");
+                            texts[4] = response.getString("Running");
+                            fillTextViews(texts);
+                            getChart(chartNum);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                        } /*catch (InterruptedException e) {
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
-                        }*/
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -115,7 +115,7 @@ public class ChartFragment extends Fragment {
         if(chartNum==0){
             List<BarEntry> barEntries = new ArrayList<>();
             for(int i=0; i<7; i++){
-                barEntries.add(new BarEntry(i,i));
+                barEntries.add(new BarEntry(i,values[i]));
             }
             BarDataSet barDataSet = new BarDataSet(barEntries, "Steps");
             barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
@@ -141,7 +141,7 @@ public class ChartFragment extends Fragment {
         else if(chartNum==1){
             List<PieEntry> pieEntries = new ArrayList<>();
             for(int i=0; i<7; i++){
-                pieEntries.add(new PieEntry(i+1,"Day"+i));
+                pieEntries.add(new PieEntry(values[i],"Day"+i));
             }
             pie.setEntryLabelColor(Color.BLACK);
             PieDataSet pieDataSet = new PieDataSet(pieEntries, "Steps");
@@ -161,4 +161,12 @@ public class ChartFragment extends Fragment {
         }
 
     }
+
+    private void fillTextViews(String[] texts){
+        ChartScreen.jumpText.setText(texts[0] + " Times Jump");
+        ChartScreen.walkText.setText(texts[1] + " Times Walk");
+        ChartScreen.stairsText.setText(texts[2] + " Times Stairs Up\n" + texts[3] + " Times Stairs Down");
+        ChartScreen.runText.setText(texts[4] + " Times Run");
+    }
+
 }

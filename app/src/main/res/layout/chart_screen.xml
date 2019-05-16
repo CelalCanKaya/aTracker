@@ -38,11 +38,19 @@
                 <FrameLayout
                     android:id="@+id/fragmentContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="240dp"
+                    android:layout_height="220dp"
                     android:layout_marginRight="20dp"
                     android:layout_marginLeft="20dp">></FrameLayout>
 
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="Today Activities" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,11 +74,12 @@
                         app:srcCompat="@drawable/walk" />
 
                     <TextView
+                        android:id="@+id/walkText"
                         android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:layout_marginLeft="20dp"
                         android:gravity="center_horizontal"
-                        android:text="20 Hours 50 Minutes\nWalk" />
+                        android:text="0 Times\nWalk" />
 
 
                 </LinearLayout>
@@ -91,11 +100,12 @@
                         app:srcCompat="@drawable/run" />
 
                     <TextView
+                        android:id="@+id/runText"
                         android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:layout_marginRight="20dp"
                         android:gravity="center_horizontal"
-                        android:text="20 Hours 50 Minutes\nRun" />
+                        android:text="0 Times\nRun" />
 
                 </LinearLayout>
 
@@ -121,14 +131,15 @@
                         android:padding="10dp"
                         android:layout_marginLeft="40dp"
                         android:gravity="left"
-                        app:srcCompat="@drawable/sleep" />
+                        app:srcCompat="@drawable/jump" />
 
                     <TextView
+                        android:id="@+id/jumpText"
                         android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:layout_marginLeft="20dp"
                         android:gravity="center_horizontal"
-                        android:text="20 Hours 50 Minutes\nSleep" />
+                        android:text="0 Times\Jump" />
 
 
                 </LinearLayout>
@@ -149,14 +160,13 @@
                         app:srcCompat="@drawable/updown" />
 
                     <TextView
+                        android:id="@+id/stairsText"
                         android:layout_width="140dp"
                         android:layout_height="50dp"
                         android:layout_marginRight="20dp"
                         android:gravity="center_horizontal"
-                        android:text="154 Stairs Up\n104 Stairs Down" />
-
+                        android:text="0 Times Stairs Up\n0 Times Stairs Down" />
                 </LinearLayout>
-
 
             </LinearLayout>
 
