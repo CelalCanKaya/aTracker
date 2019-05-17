@@ -33,7 +33,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Set;
 
 import dmax.dialog.SpotsDialog;
 import es.dmoral.toasty.Toasty;
@@ -58,12 +61,14 @@ public class MainScreen extends MenuBar {
     TextView currentState;
     TextView calories;
     double res = 0f;
+    boolean stop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
         super.menuBar();
+        stop=false;
         url = "http://40.117.95.148:9080/predict";
         final TextView sCount = (TextView) findViewById(R.id.stepCounter);
         final TextView bpmCount = (TextView) findViewById(R.id.beatCount);
@@ -100,7 +105,7 @@ public class MainScreen extends MenuBar {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    while(true){
+                    while(!stop){
                         try {
                             int ch;
                             ch=-1;
@@ -210,19 +215,28 @@ public class MainScreen extends MenuBar {
             @Override
             public void run() {
                 try {
-                    while (!isInterrupted()) {
+                    while (!stop) {
                         Thread.sleep(50);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 String stee=""+stepcount;
                                 sCount.setText(stee);
-                                calories.setText("Burnt Calories: " + stepcount*0.035);
-                                String bpee=bpm+" BPM";
-                                bpmCount.setText(Double.toString(res));
-                                if(Settings.height>180){
-
+                                NumberFormat formatter = new DecimalFormat("#0.0000");
+                                if(Settings.height>=180){
+                                    double temp = stepcount* (0.028 + (Settings.weight-45)*0.0005);
+                                    calories.setText("Burnt Calories: " + formatter.format(temp) + " cal");
                                 }
+                                else if(Settings.height<180 && Settings.weight>165){
+                                    double temp = stepcount* (0.025 + (Settings.weight-45)*0.0005);
+                                    calories.setText("Burnt Calories: " + formatter.format(temp) + " cal");
+                                }
+                                else if(Settings.height<180 && Settings.weight>165){
+                                    double temp = stepcount* (0.023 + (Settings.weight-45)*0.0005);
+                                    calories.setText("Burnt Calories: " + formatter.format(temp) + " cal");
+                                }
+                                String bpee=bpm+" BPM";
+                                bpmCount.setText(bpee);
                             }
                         });
                     }
@@ -234,7 +248,7 @@ public class MainScreen extends MenuBar {
             @Override
             public void run() {
                 try {
-                    while (!isInterrupted()) {
+                    while (!stop) {
                         Thread.sleep(50);
                         runOnUiThread(new Runnable() {
                             @Override
@@ -259,8 +273,9 @@ public class MainScreen extends MenuBar {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+        stop=true;
         unregisterReceiver(mReceiver);
+        super.onDestroy();
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {

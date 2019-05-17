@@ -73,21 +73,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="burada veriler gozukucek"/>
+            android:textSize="20sp"
+            android:layout_marginTop="16dp"
+            android:textStyle="bold"
+            android:text="STATUS"/>
 
-        <TextView
-            android:id="@+id/calories"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:text="Calories Burnt: "/>
+            android:orientation="horizontal" >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/calories"
+                android:layout_marginRight="10dp"/>
+
+            <TextView
+                android:id="@+id/calories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="1dp"
+                android:text="Cannot Retrieve The Height And Weight Data!"
+                android:layout_marginRight="10dp"
+                android:textSize="16sp" />
+        </LinearLayout>
+
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:background="@android:color/black" />
 
         <LinearLayout

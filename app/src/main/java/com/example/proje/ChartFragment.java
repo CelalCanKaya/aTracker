@@ -130,7 +130,7 @@ public class ChartFragment extends Fragment {
             bar.getXAxis().setDrawGridLines(false);
             XAxis xAxis = bar.getXAxis();
             xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-            xAxis.setValueFormatter(new IndexAxisValueFormatter(new String[]{"Mon","Tue","Wed","Thu","Fri", "Sat", "Sun"}));
+            xAxis.setValueFormatter(new IndexAxisValueFormatter(new String[]{"Day 7","Day 6","Day 5","Day 4","Day 3", "Day 2", "Day 1"}));
             Description description = new Description();
             description.setText("Steps Per Day");
             bar.setDragEnabled(false);
@@ -141,7 +141,7 @@ public class ChartFragment extends Fragment {
         else if(chartNum==1){
             List<PieEntry> pieEntries = new ArrayList<>();
             for(int i=0; i<7; i++){
-                pieEntries.add(new PieEntry(values[i],"Day"+i));
+                pieEntries.add(new PieEntry(values[i],"Day"+i+1));
             }
             pie.setEntryLabelColor(Color.BLACK);
             PieDataSet pieDataSet = new PieDataSet(pieEntries, "Steps");

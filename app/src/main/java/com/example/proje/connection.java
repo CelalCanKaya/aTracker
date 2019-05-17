@@ -57,7 +57,6 @@ public class connection extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... devices) {
             try {
-                load();
                 if (btSocket == null || !isBtConnected) {
                     System.out.println("BASAMAK 1 OK");
                     myBluetooth = BluetoothAdapter.getDefaultAdapter();

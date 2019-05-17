@@ -1,5 +1,7 @@
 package com.example.proje;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -29,6 +31,7 @@ public class Settings extends MenuBar {
     Integer weightTemp = -1;
     static Integer height = -1;
     static Integer weight = -1;
+    Button feedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,10 +40,25 @@ public class Settings extends MenuBar {
         super.menuBar();
         heightText = (EditText) findViewById(R.id.heightText);
         weightText = (EditText) findViewById(R.id.weightText);
+        feedback = findViewById(R.id.feedback);
         SubmitButton submit = findViewById(R.id.submit);
         submit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 save();
+            }
+        });
+        feedback.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String[] TO = {"atrackerinfo@gmail.com"};
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setData(Uri.parse("mailto:"));
+                emailIntent.setType("text/plain");
+
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "aTracker FeedBack");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Your FeedBack");
+
+                startActivity(Intent.createChooser(emailIntent, "Please Select An Mail App."));
             }
         });
     }

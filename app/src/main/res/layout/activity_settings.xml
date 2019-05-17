@@ -22,7 +22,8 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Doğru bir şekilde kalori hesabı yapılması için boyunuzu ve kilonuzu giriniz.Ardından Submit butonuna basınız." />
+                android:textStyle="bold"
+                android:text="Please Enter The Correct Height And Weight Data For Retrieving The Burnt Calories.Then Click The Submit Button." />
 
             <EditText
                 android:id="@+id/heightText"
@@ -49,9 +50,11 @@
             <Button
                 android:id="@+id/feedback"
                 android:layout_marginTop="30dp"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="GERİ BİLDİRİM BUTONU OLUCAK" />
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="25dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@drawable/feedback" />
 
             <com.spark.submitbutton.SubmitButton
                 android:id="@+id/submit"
