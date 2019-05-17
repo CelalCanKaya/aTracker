@@ -47,13 +47,14 @@
                 android:hint="Please Enter Your Weight"/>
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/feedback"
                 android:layout_marginTop="30dp"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="GERİ BİLDİRİM BUTONU OLUCAK" />
 
             <com.spark.submitbutton.SubmitButton
+                android:id="@+id/submit"
                 android:layout_width="200dp"
                 android:layout_height="100dp"
                 android:text="Submit"

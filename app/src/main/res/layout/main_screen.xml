@@ -68,6 +68,22 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/currentState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="burada veriler gozukucek"/>
+
+        <TextView
+            android:id="@+id/calories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Calories Burnt: "/>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -99,14 +115,12 @@
                 android:textColor="#400"
                 android:textSize="42sp" />
 
-
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@android:color/black" />
-
 
     </LinearLayout>
 

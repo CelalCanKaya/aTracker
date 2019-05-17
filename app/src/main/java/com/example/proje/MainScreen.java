@@ -44,16 +44,20 @@ public class MainScreen extends MenuBar {
     String bpm = "";
     String a = "";
     double length=0f;
-    int stepcount=0;
+    static int stepcount=0;
     int count=0;
     int flag=0;
     int CountX=0;
     Thread thread1;
+    Thread control;
+    Thread t;
     ImageView isConnectedImage;
     public AlertDialog alertDia;
     String url;
     RequestQueue queue;
-
+    TextView currentState;
+    TextView calories;
+    double res = 0f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,8 @@ public class MainScreen extends MenuBar {
         final TextView bpmCount = (TextView) findViewById(R.id.beatCount);
         isConnectedImage = (ImageView) findViewById(R.id.isConnected);
         final Button connectButton = findViewById(R.id.connectButton);
+        currentState = findViewById(R.id.currentState);
+        calories = findViewById(R.id.calories);
         connectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -126,13 +132,13 @@ public class MainScreen extends MenuBar {
                                     x=Double.parseDouble(arrX[i])/8192;
                                     y=Double.parseDouble(arrY[i])/8192;
                                     z=Double.parseDouble(arrZ[i])/8192;
-                                    double res=Math.sqrt(x*x+y*y+z*z);
+                                    res=Math.sqrt(x*x+y*y+z*z);
                                     //System.out.println("x celal"+arrX[i]+"-"+x+" y can"+arrY[i]+" z kaya"+arrZ[i]+"Sonuc"+res);
-                                    if(flag==0&&res>0.98f){
+                                    if(x>0&&flag==0&&res>0.95f){
                                         stepcount++;
                                         flag=1;
                                     }
-                                    else if(res<0.85f){
+                                    else if(x>0&&res<0.85f){
                                         flag=0;
                                     }
 
@@ -143,7 +149,30 @@ public class MainScreen extends MenuBar {
                                         new Response.Listener<JSONObject>() {
                                             @Override
                                             public void onResponse(JSONObject response) {
-                                                System.out.println("SERVER RESPONSE: " + response);
+                                                int state = 0;
+                                                try {
+                                                    state = Integer.parseInt(response.getString("Result"));
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                if(state==0){
+                                                    currentState.setText("WALKING");
+                                                }
+                                                else if(state==1){
+                                                    currentState.setText("RUNNING");
+                                                }
+                                                else if(state==2){
+                                                    currentState.setText("STAIRING UP");
+                                                }
+                                                else if(state==3){
+                                                    currentState.setText("STAIRING DOWN");
+                                                }
+                                                else if(state==4){
+                                                    currentState.setText("JUMPING");
+                                                }
+                                                else if(state==5){
+                                                    currentState.setText("STANDING");
+                                                }
                                             }
                                         },
                                         new Response.ErrorListener() {
@@ -182,14 +211,18 @@ public class MainScreen extends MenuBar {
             public void run() {
                 try {
                     while (!isInterrupted()) {
-                        Thread.sleep(100);
+                        Thread.sleep(50);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 String stee=""+stepcount;
                                 sCount.setText(stee);
+                                calories.setText("Burnt Calories: " + stepcount*0.035);
                                 String bpee=bpm+" BPM";
-                                bpmCount.setText(bpee);
+                                bpmCount.setText(Double.toString(res));
+                                if(Settings.height>180){
+
+                                }
                             }
                         });
                     }

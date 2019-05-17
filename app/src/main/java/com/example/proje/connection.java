@@ -7,11 +7,18 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.util.UUID;
 
 import dmax.dialog.SpotsDialog;
@@ -32,9 +39,9 @@ public class connection extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_screen);
+        load();
         new BTbaglan().execute();
     }
-
 
     @SuppressLint("StaticFieldLeak")
     private class BTbaglan extends AsyncTask<Void, Void, Void> {
@@ -50,15 +57,31 @@ public class connection extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... devices) {
             try {
-
+                load();
                 if (btSocket == null || !isBtConnected) {
+                    System.out.println("BASAMAK 1 OK");
                     myBluetooth = BluetoothAdapter.getDefaultAdapter();
+                    System.out.println("BASAMAK 2 OK");
                     BluetoothDevice cihaz = myBluetooth.getRemoteDevice(address);
+                    System.out.println("BASAMAK 3 OK");
                     btSocket = cihaz.createInsecureRfcommSocketToServiceRecord(myUUID);
+                    System.out.println("BASAMAK 4 OK");
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
+                    System.out.println("BASAMAK 5 OK");
                     btSocket.connect();
+                    System.out.println("BASAMAK 6 OK");
                 }
             } catch (IOException e) {
+                try {
+                    btSocket.getInputStream().close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                try {
+                    btSocket.close();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 ConnectSuccess = false;
             }
             return null;
@@ -86,5 +109,21 @@ public class connection extends AppCompatActivity {
 
     }
 
+    public void load(){
+        FileInputStream fis = null;
+        try {
+            fis = openFileInput(Settings.FILE_NAME);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            String text = br.readLine();
+            String[] splited = text.split("\\s+");
+            Settings.height = Integer.parseInt(splited[0]);
+            Settings.weight = Integer.parseInt(splited[1]);
+        } catch (FileNotFoundException e) {
+            Toasty.error(getApplicationContext(), "Cannot retrieve the height and weight data!", Toast.LENGTH_SHORT, true).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
