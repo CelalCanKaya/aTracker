@@ -92,14 +92,14 @@ public class connection extends AppCompatActivity {
             if (!ConnectSuccess) {
                 Intent menu = new Intent(getApplicationContext(), MainScreen.class);
                 startActivity(menu);
-                Toasty.error(getApplicationContext(), "ESP32 İle Bağlantı Kurulamadı.", Toast.LENGTH_SHORT, true).show();
+                Toasty.error(getApplicationContext(), "Cannot Connect With ESP32.", Toast.LENGTH_SHORT, true).show();
                 btSocket=null;
                 isBtConnected = false;
                 finish();
             } else {
                 Intent menu = new Intent(getApplicationContext(), MainScreen.class);
                 startActivity(menu);
-                Toasty.success(getApplicationContext(), "ESP32 İle Bağlantı Kuruldu.", Toast.LENGTH_SHORT, true).show();
+                Toasty.success(getApplicationContext(), "Connected With ESP32.", Toast.LENGTH_SHORT, true).show();
                 finish();
                 isBtConnected = true;
             }

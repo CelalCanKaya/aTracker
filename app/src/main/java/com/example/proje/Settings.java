@@ -1,6 +1,7 @@
 package com.example.proje;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,9 +10,12 @@ import android.text.Spanned;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spark.submitbutton.SubmitButton;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -27,6 +31,7 @@ public class Settings extends MenuBar {
     public static final String FILE_NAME = "aTrackerDatas.csv";
     EditText heightText;
     EditText weightText;
+    TextView info;
     Integer heightTemp = -1;
     Integer weightTemp = -1;
     static Integer height = -1;
@@ -38,10 +43,15 @@ public class Settings extends MenuBar {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         super.menuBar();
+        info = findViewById(R.id.info);
         heightText = (EditText) findViewById(R.id.heightText);
         weightText = (EditText) findViewById(R.id.weightText);
         feedback = findViewById(R.id.feedback);
         SubmitButton submit = findViewById(R.id.submit);
+        Typeface tf1 = Typeface.createFromAsset(getAssets(),  "fonts/Rounded_Elegance.ttf");
+        weightText.setTypeface(tf1);
+        heightText.setTypeface(tf1);
+        info.setTypeface(tf1);
         submit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 save();

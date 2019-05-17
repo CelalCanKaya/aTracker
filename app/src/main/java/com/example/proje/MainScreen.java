@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -74,8 +75,13 @@ public class MainScreen extends MenuBar {
         final TextView bpmCount = (TextView) findViewById(R.id.beatCount);
         isConnectedImage = (ImageView) findViewById(R.id.isConnected);
         final Button connectButton = findViewById(R.id.connectButton);
+        Typeface tf1 = Typeface.createFromAsset(getAssets(),  "fonts/Rounded_Elegance.ttf");
         currentState = findViewById(R.id.currentState);
         calories = findViewById(R.id.calories);
+        currentState.setTypeface(tf1);
+        calories.setTypeface(tf1);
+        bpmCount.setTypeface(tf1);
+        sCount.setTypeface(tf1);
         connectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -327,9 +333,9 @@ public class MainScreen extends MenuBar {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
             if (!ConnectSuccess) {
-                Toasty.error(getApplicationContext(), "ESP32 İle Bağlantı Kurulamadı.", Toast.LENGTH_SHORT, true).show();
+                Toasty.error(getApplicationContext(), "Cannot Connect With ESP32.", Toast.LENGTH_SHORT, true).show();
             } else {
-                Toasty.success(getApplicationContext(), "ESP32 İle Bağlantı Kuruldu.", Toast.LENGTH_SHORT, true).show();
+                Toasty.success(getApplicationContext(), "Connected With ESP32.", Toast.LENGTH_SHORT, true).show();
                 connection.isBtConnected=true;
             }
             alertDia.dismiss();
