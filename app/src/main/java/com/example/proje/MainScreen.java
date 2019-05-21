@@ -140,16 +140,16 @@ public class MainScreen extends MenuBar {
                                     bpm=jsonObject.get("pulse_meter").toString();
 
                                     double x,y,z;
-                                    x=Double.parseDouble(arrX[i])/8192;
-                                    y=Double.parseDouble(arrY[i])/8192;
-                                    z=Double.parseDouble(arrZ[i])/8192;
+                                    x=Double.parseDouble(arrX[i]);
+                                    y=Double.parseDouble(arrY[i]);
+                                    z=Double.parseDouble(arrZ[i]);
                                     res=Math.sqrt(x*x+y*y+z*z);
-                                    //System.out.println("x celal"+arrX[i]+"-"+x+" y can"+arrY[i]+" z kaya"+arrZ[i]+"Sonuc"+res);
-                                    if(x>0&&flag==0&&res>0.95f){
+                                    System.out.println("Sonuc"+(z-6600f));
+                                    if(flag==0&&(z>7600f||z<5600f)){
                                         stepcount++;
                                         flag=1;
                                     }
-                                    else if(x>0&&res<0.85f){
+                                    else if(z>6000f&&z<7200f){
                                         flag=0;
                                     }
 
