@@ -58,7 +58,9 @@ public class MainScreen extends MenuBar {
     ImageView isConnectedImage;
     public AlertDialog alertDia;
     String url;
+    String url2;
     RequestQueue queue;
+    RequestQueue queue2;
     TextView currentState;
     TextView calories;
     double res = 0f;
@@ -71,6 +73,7 @@ public class MainScreen extends MenuBar {
         super.menuBar();
         stop=false;
         url = "http://40.117.95.148:9080/predict";
+        url2 = "http://40.117.95.148:9080/add";
         final TextView sCount = (TextView) findViewById(R.id.stepCounter);
         final TextView bpmCount = (TextView) findViewById(R.id.beatCount);
         isConnectedImage = (ImageView) findViewById(R.id.isConnected);
@@ -197,7 +200,27 @@ public class MainScreen extends MenuBar {
                                         0,
                                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                                queue.add(objectRequest);
+                                //queue.add(objectRequest);
+                                queue2 = Volley.newRequestQueue(getApplicationContext());
+                                JsonObjectRequest objectRequest2 = new JsonObjectRequest(Request.Method.POST, url2, jsonObject,
+                                        new Response.Listener<JSONObject>() {
+                                            @Override
+                                            public void onResponse(JSONObject response) {
+                                                System.out.println("Added to database!");
+                                            }
+                                        },
+                                        new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                System.out.println("ERROR22222222");
+                                            }
+                                        }
+                                );
+                                objectRequest2.setRetryPolicy(new DefaultRetryPolicy(
+                                        0,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                                queue2.add(objectRequest2);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
