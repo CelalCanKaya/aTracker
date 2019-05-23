@@ -200,7 +200,7 @@ public class MainScreen extends MenuBar {
                                         0,
                                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                                //queue.add(objectRequest);
+                                queue.add(objectRequest);
                                 queue2 = Volley.newRequestQueue(getApplicationContext());
                                 JsonObjectRequest objectRequest2 = new JsonObjectRequest(Request.Method.POST, url2, jsonObject,
                                         new Response.Listener<JSONObject>() {
